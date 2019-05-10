@@ -17,7 +17,9 @@ client.connect(function(err) {
 
   insertDocuments(db, function() {
     updateDocument(db, function() {
-      client.close();
+      removeDocument(db, function() {
+        client.close();
+      });
     });
   });
 });
@@ -73,3 +75,14 @@ const removeDocument = function(db, callback) {
     callback(result);
   });    
 }
+
+const indexCollection = function(db, callback) {
+  db.collection('documents').createIndex(
+    { "a": 1 },
+      null,
+      function(err, results) {
+        console.log(results);
+        callback();
+    }
+  );
+};
