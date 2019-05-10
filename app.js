@@ -11,12 +11,12 @@ const client = new MongoClient(url);
 // Use connect method to connect to the server
 client.connect(function(err) {
   assert.equal(null, err);
-  console.log("Connected correctly to server");
+  console.log("Connected successfully to server");
 
   const db = client.db(dbName);
 
   insertDocuments(db, function() {
-    findDocuments(db, function() {
+    updateDocument(db, function() {
       client.close();
     });
   });
@@ -60,4 +60,16 @@ const updateDocument = function(db, callback) {
     console.log("Updated the document with the field a equal to 2");
     callback(result);
   });  
+}
+
+const removeDocument = function(db, callback) {
+  // Get the documents collection
+  const collection = db.collection('documents');
+  // Delete document where a is 3
+  collection.deleteOne({ a : 3 }, function(err, result) {
+    assert.equal(err, null);
+    assert.equal(1, result.result.n);
+    console.log("Removed the document with the field a equal to 3");
+    callback(result);
+  });    
 }
