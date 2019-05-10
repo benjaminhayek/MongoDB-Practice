@@ -4,7 +4,6 @@ const assert = require('assert');
 // Connection URL
 const url = 'mongodb://localhost:27017';
 
-// Database Name
 const dbName = 'myproject';
 
 const client = new MongoClient(url);
@@ -16,10 +15,8 @@ client.connect(function(err) {
   const db = client.db(dbName);
 
   insertDocuments(db, function() {
-    updateDocument(db, function() {
-      removeDocument(db, function() {
-        client.close();
-      });
+    indexCollection(db, function() {
+      client.close();
     });
   });
 });
